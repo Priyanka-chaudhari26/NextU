@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard</title>
+    <style>
+        /*.container {
+            margin: 20px;
+        }*/
+        .create-job-btn {
+            margin-top: 10px;
+        }
+        .job-list {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+			/*justify-content: center;*/
+			padding-left: 10%;
+			
+        }
+        .job-card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            width: 250px;
+            text-align: center;
+            background-color: #f9f9f9;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            text-decoration: none;
+            color: #333;
+        }
+        .job-card:hover {
+            background-color: #e8f4fa;
+        }
+        .job-card h4, .job-card p {
+            margin: 5px 0;
+        }
+		
+		        /* Overall Body Styles */
+		body {
+		    font-family: 'Arial', sans-serif;
+		    background-color: #f4f4f9; /* Light background color */
+		    margin: 0;
+		    padding: 0;
+		    color: #333;
+		    display: flex;
+		    justify-content: center;
+		    align-items: flex-start;
+		    height: 100vh; /* Full viewport height */
+		}
+
+		/* Container Styles */
+		.container {
+		    background-color: #ffffff; /* White background for the form */
+		    padding: 20px;
+		    border-radius: 8px; /* Rounded corners */
+		    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+		    width: 80%; /* Fixed width for the form */
+			max-width: 1200px; /* Add a max width for larger screens */
+			margin: 20px auto; /* Center container horizontally */
+			text-align: left; 
+		    /*text-align: center;*/ /* Left align text within the form */
+		}
+
+		/* Heading Styles */
+		h2 {
+		    color: rgb(153, 50, 204); /* Match with reference */
+		    margin-bottom: 20px 0; /* Space below the heading */
+		     /* Center the heading */
+			 padding-left: 8%;
+			
+		}
+		
+		/* Message Styles */
+		.success-message,
+		.error-message {
+		    margin-bottom: 15px; /* Space below messages */
+		}
+
+		/* Input Styles */
+		input[type="text"] {
+		    width: 100%; /* Full width input fields */
+		    padding: 10px; /* Padding inside input fields */
+		    border: 1px solid #ccc; /* Light border */
+		    border-radius: 4px; /* Rounded corners */
+		    box-sizing: border-box; /* Include padding and border in element's total width */
+		    margin-bottom: 15px; /* Space below input fields */
+		}
+
+		/* Button Styles */
+		button {
+		    background-color: rgb(153, 50, 204); /* Match with reference */
+		    color: white;
+		    padding: 10px 15px;
+		    border: none;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    transition: background-color 0.3s ease;
+		    width: 100%; /* Full width button */
+		}
+
+		button:hover {
+		    background-color: rgb(199, 95, 243); /* Match with reference */
+		}
+		.header {
+		            display: flex;
+		            justify-content: space-between;
+		            align-items: center;
+		            margin-bottom: 20px;
+		        }
+
+		        .welcome {
+		            font-size: 20px;
+		            color: #9932CC; /* Purple color */
+		            margin: 0;
+					padding-left:10%
+		        }
+
+				.header-buttons {
+				            display: flex;
+				            gap: 10px;
+				        }
+		        .profile-btn, .logout-btn {
+		            
+		            color: white;
+					width: 100px; /* Same width for both buttons */
+					            text-align: center;
+					            padding: 10px;
+					            border: none;
+					            border-radius: 5px;
+					            font-size: 14px;
+					            cursor: pointer;
+					            transition: background-color 0.3s ease;
+					            text-decoration: none;
+		        }
+
+				.profile-btn{
+					background-color: #4CAF50;
+				}
+		        .profile-btn:hover {
+		            background-color: #45A049;
+		        }
+
+		        .logout-btn {
+		            background-color: #D6108B;
+		            color: white;
+		            
+		        }
+
+		        .logout-btn:hover {
+		            background-color: #EF2EA7;
+		        }
+				.ht{
+							color: rgb(197, 46, 209); /* Match with reference */
+							 /* Space below the heading */
+							 padding-left: 10%;
+							 
+									  
+						}
+
+		/* Responsive Design */
+		@media (max-width: 400px) {
+		    .container {
+		        width: 90%; /* Adjust width for smaller screens */
+		    }
+			.header {
+			                flex-direction: column;
+			                align-items: flex-start;
+			                gap: 10px;
+			            }
+
+			            .logout-btn {
+			                width: auto;
+			            }
+		}
+		    
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!--<h2>Welcome, [[${user.name}]]!</h2>
+		<a th:href="@{/user-profile}" class="btn btn-primary profile">My Profile</a>
+		<form th:action="@{/userlogout}" method="post">
+		    <button type="submit" class="btn btn-danger logout">Logout</button>
+		</form>-->
+		
+		<div class="header">
+		           <h2 class="welcome"><i>Welcome, Priya Prakash Chaudhari!</i></h2>
+		           <div class="header-buttons">
+		               <a th:href="@{/user-profile}" class="profile-btn">My Profile</a>
+		               <form th:action="@{/userlogout}" method="post" style="margin: 0;">
+		                   <button type="submit" class="logout-btn">Logout</button>
+		               </form>
+		           </div>
+		       </div>
+		<br/>
+		<br/>
+		<h3 class="ht">Jobs for you!</h3>
+					<br/>
+        <div class="job-list">
+            
+            <a th:each="job : ${jobs}" class="job-card" th:href="@{/job/{jobId}(jobId=${job.jobId})}">
+				<div>
+					<h3 th:text="${job.companyName}"></h3>
+	                <h4 th:text="${job.title}">Job Title</h4>
+	                <!--<p th:text="${job.location}">Location</p>-->
+					<!---<button type="button" th:onclick="'window.location.href=\'/details/' + ${job.jobId}">Show details</button>-->	
+					<button type="button" th:onclick="@{/job/{jobId}(jobId=${job.jobId})}">Show details</button>	
+
+				</div>
+            </a>
+        </div>
+		
+		<h3 class="ht">Your Applied Jobs</h3>
+		<br/>
+		<div class="job-list">
+			
+				<div th:if="${appliedJobs != null and appliedJobs.size() == 0}" class="card">
+				    No applied jobs found.
+				</div>
+				
+			    <div th:each="userApp : ${userApplications}" class="job-card">
+			        <h3 th:text="${userApp.job.companyName}"></h3>
+			        <h4 th:text="${userApp.job.title}"></h4>
+			        <a th:href="@{/job/{jobId}(jobId=${userApp.job.jobId})}" class="btn"><button>View Details</button></a>
+					<!--<p><strong>Status: </strong>
+						<span  th:text="${application.status}"></span>
+						
+					</p>-->
+					<p><strong>Status: </strong>
+					   <span th:text="${userApp.status}"></span>
+					</p>
+					<!---<button type="button" th:onclick="@{/job/{jobId}(jobId=${userApp.job.jobId})}">View Details</button>--->
+					
+			    </div>
+			
+		</div>
+    </div>
+</body>
+</html>

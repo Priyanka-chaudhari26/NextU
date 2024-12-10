@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employer Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-top: 20px;
+        }
+		form {
+		            width: 400px;
+		            margin: 0 auto;
+		            background-color: #fff;
+		            padding: 20px;
+		            border-radius: 5px;
+		            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+		
+		input:focus {
+				  border-color: #4CAF50;
+		}
+				
+		h3 {
+		           text-align: center;
+		           color: #333;
+		           margin-top: 20px;
+		       }
+
+        form {
+            width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .account-type {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        .account-type label {
+            font-weight: normal;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+		.password-criteria {
+		            font-size: 14px;
+		            margin: 0 0 10px 0;
+		        }
+		.valid {
+			 color: green;
+		 }
+
+		.invalid {
+			border-color: red;
+		}
+		.valid-box {
+			border-color: 2px solid green !important;
+		}
+        input:focus {
+            border-color: #4CAF50;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+		.hidden {
+		            display: none;
+		 }
+
+    </style>
+	<script>
+		function validatePasswordInput() {
+		     const password = document.getElementById("password").value;
+		     const passwordField = document.getElementById("password");
+		     const criteria = {
+		         length: document.getElementById("lengthCriteria"),
+		         uppercase: document.getElementById("uppercaseCriteria"),
+		         lowercase: document.getElementById("lowercaseCriteria"),
+		         digit: document.getElementById("digitCriteria"),
+		         specialChar: document.getElementById("specialCharCriteria"),
+		      };
+			 for (let key in criteria) {
+				criteria[key].classList.remove("valid");
+				criteria[key].classList.add("invalid");
+			 }
+			 const lengthValid = password.length >= 8;
+			 const uppercaseValid = /[A-Z]/.test(password);
+			 const lowercaseValid = /[a-z]/.test(password);
+			 const digitValid = /\d/.test(password);
+			 const specialCharValid = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+			 if (lengthValid) criteria.length.classList.replace("invalid", "valid");
+			 if (uppercaseValid) criteria.uppercase.classList.replace("invalid", "valid");
+			 if (lowercaseValid) criteria.lowercase.classList.replace("invalid", "valid");
+			 if (digitValid) criteria.digit.classList.replace("invalid", "valid");
+			 if (specialCharValid) criteria.specialChar.classList.replace("invalid", "valid");
+			 if (lengthValid && uppercaseValid && lowercaseValid && digitValid && specialCharValid) {
+				passwordField.classList.add("valid-box");
+			 } else {
+				passwordField.classList.remove("valid-box");
+			 }		
+		}		
+
+											
+		function validatePassword() {
+		            const password = document.getElementById("password").value;
+		            const confirmPassword = document.getElementById("confirmPassword").value;
+					const confirmPasswordField = document.getElementById("confirmPassword");
+		            /*if (password != confirmPassword) {
+		                alert("Passwords do not match.");
+		                return false;
+		            }*/
+					if (password === confirmPassword) {
+					            confirmPasswordField.classList.add("valid-box");
+					            confirmPasswordField.setCustomValidity(""); // Reset validity
+					        } else {
+					            confirmPasswordField.classList.remove("valid-box");
+					            confirmPasswordField.setCustomValidity("Passwords do not match"); // Prevent form submission
+					        }
+		            return true;
+		        }
+				
+				document.getElementById("mobileNumber").addEventListener("input", function (event) {
+				        const mobileNumber = event.target.value;
+				        const regex = /^[6-9]\\d{9}$/; // Allow up to 10 digits
+				        if (!regex.test(mobileNumber)) {
+				            event.target.setCustomValidity("Mobile number must contain only digits and be at most 10 digits long.");
+				        } else {
+				            event.target.setCustomValidity(""); // Clear error
+				        }
+				    });
+	</script>
+</head>
+<body>
+    <h2>Employer Registration</h2>
+	<div th:if="${successMsg}">
+		<h3 style="color: #4CAF50;" th:text="${successMsg}"></h3>
+	</div>
+	<div th:if="${errorMsg}">
+			<h3 style="color:crimson;" th:text="${errorMsg}"></h3>
+		</div>
+	<h3>Already Registered? <a href="employer-login" style="text-decoration: none;">Login here</a></h3>
+
+	    <form th:object="${employer}" action="/registerEmployer" modelAttribute="employer" method="post" onsubmit="return validatePassword()">
+        
+        
+        <div class="form-group">
+            <label for="fullName">Full Name (as per PAN):</label>
+            <input type="text" id="fullName"  placeholder="Enter full name" th:field="*{fullName}"  required>
+        </div>
+
+        
+        <div class="form-group account-type">
+            <label>Account Type:</label>
+            <label for="company">
+                <input type="radio" id="company"  th:field="*{accountType}" value="Company" required>
+                Company/Business
+            </label>
+            <label for="individual">
+                <input type="radio" id="individual" th:field="*{accountType}" value="Individual" required>
+                Individual/Proprietor
+            </label>
+        </div>
+
+        
+        <div class="form-group">
+            <label for="mobileNumber">Mobile Number:</label>
+            <input type="number" id="mobileNumber" th:field="*{mobileNumber}" placeholder="Enter mobile number" maxlength="10" required>
+        </div>
+
+        
+        <div class="form-group">
+            <label for="email">Official Email ID:</label>
+            <input type="email" id="email" th:field="*{email}" placeholder="Enter email" required>
+        </div>
+
+        
+		
+	        <div class="form-group">
+	            <label for="password">Password:</label>
+	            <input type="password" id="password" th:field="*{password}" placeholder="Enter password" oninput="validatePasswordInput()" required>
+	        </div>
+			<div class="password-criteria">
+			            <p id="lengthCriteria" class="invalid">✔ At least 8 characters</p>
+			            <p id="uppercaseCriteria" class="invalid">✔ At least one uppercase letter</p>
+			            <p id="lowercaseCriteria" class="invalid">✔ At least one lowercase letter</p>
+			            <p id="digitCriteria" class="invalid">✔ At least one digit</p>
+			            <p id="specialCharCriteria" class="invalid">✔ At least one special character (!@#$%^&*...)</p>
+			        </div>
+			
+			        <div class="form-group">
+			            <label for="confirmPassword">Confirm Password:</label>
+			            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" oninput="validatePassword()" required>
+			        </div>
+			<div class="form-group">
+				<label for="EmployercompanyName">Company Name :</label>
+				<input type="text" id="EmployercompanyName"  placeholder="Enter company name" th:field="*{EmployercompanyName}"  required>
+			</div>
+			
+			<div class="form-group">
+				<label for="EmployercompanyAddress">Company Address :</label>
+				<input type="text" id="EmployercompanyAddress"  placeholder="Enter company Address" th:field="*{EmployercompanyAddress}"  required>
+			</div>
+			<div class="form-group">
+			     <label for="EmployercompanyContactNumber">Company Contact Number (Optional):</label>
+			     <input type="number" id="EmployercompanyContactNumber" th:field="*{EmployercompanyContactNumber}" placeholder="Enter company contact number" required>
+		    </div>
+       
+        <!--<div class="form-group">
+            <label for="otp">OTP Received on entered Email ID:</label>
+            <input type="number" id="otp" th:field="*{otp}" placeholder="Enter OTP" required>
+        </div> -->
+		<!-- Conditional OTP Field (only visible after OTP is sent) -->
+		       <!--<div th:if="${showOtpField}">
+		           <label for="otp">Enter OTP Received on Email ID:</label>
+		           <input type="text" id="otp" th:field="*{otp}" name="enteredOtp" placeholder="Enter OTP" required><br>
+		       </div>-->
+
+        
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>

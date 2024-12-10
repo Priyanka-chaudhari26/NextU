@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	    <script src="https://unpkg.com/@yaireo/tagify@latest/dist/tagify.min.js"></script>
+	    <link rel="stylesheet" href="https://unpkg.com/@yaireo/tagify@latest/dist/tagify.css">
+		
+		<style>
+		    /* Style for the suggestions dropdown */
+		    .suggestions-dropdown {
+		        border: 1px solid #ccc;
+		        display:inline-block;
+		        max-height: 100px;
+		        overflow-y: auto;
+		        position: absolute;
+		        background-color: white;
+		        width: 200px;
+		        z-index: 1000;
+		    }
+		    .suggestion-item {
+		        padding: 5px;
+		        cursor: pointer;
+		    }
+		    .suggestion-item:hover {
+		        background-color: #f0f0f0;
+		    }
+		    .tag {
+		        display: inline-block;
+		        background-color: #e0e0e0;
+		        border-radius: 3px;
+		        padding: 5px;
+		        margin: 2px;
+		    }
+			body {
+							font-family: 'Arial', sans-serif;
+							background-color: #f4f4f9; /* Match with reference */
+							margin: 0;
+							padding: 0;
+							color: #333;
+						}
+					
+						/* Heading Styles */
+						h2 {
+							text-align: center;
+							color: rgb(153, 50, 204); /* Match with reference */
+							margin-top: 40px;
+							font-size: 32px;
+							font-weight: bold;
+						}
+					
+						h3 {
+							text-align: center;
+							color: #16a085; /* Match with reference */
+							margin-top: 20px;
+							font-size: 18px;
+							font-weight: 400;
+						}
+					
+						/* Form Styles */
+						form {
+							width: 450px;
+							margin: 30px auto;
+							background-color: #ffffff;
+							padding: 30px;
+							border-radius: 8px;
+							box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+							border: 1px solid #ddd;
+						}
+					
+						/* Input Field Styles */
+						input:focus {
+							border-color: rgb(153, 50, 204); /* Match with reference */
+							box-shadow: 0 0 5px rgba(153, 50, 204, 0.3);
+						}
+					
+						label {
+							display: block;
+							margin-bottom: 8px;
+							font-weight: bold;
+							color: #34495e;
+						}
+					
+						input[type="text"],
+						input[type="email"],
+						input[type="number"],
+						input[type="file"] {
+							width: 100%;
+							padding: 8px;
+							margin: 10px 0;
+							border: 1px solid #ccc;
+							border-radius: 4px;
+							background-color: #f9f9f9;
+						}
+					
+						/* Button Styles */
+						button {
+							background-color: rgb(153, 50, 204);
+							color: white;
+							padding: 10px 20px;
+							border: none;
+							border-radius: 4px;
+							cursor: pointer;
+							font-size: 16px;
+							align-items:center ;
+							margin-inline-start: 43%;
+						}
+					
+						button:hover {
+							background-color: rgb(120, 38, 153);
+						}
+					
+						/* Tagify Container Styles */
+						#skillsTags {
+							margin-top: 15px;
+						}
+					
+						.tag {
+							display: inline-block;
+							background-color: #e1e1e1;
+							padding: 5px 10px;
+							margin: 5px;
+							border-radius: 20px;
+							font-size: 14px;
+							color: #333;
+							position: relative;
+						}
+					
+						.tag button {
+							background: none;
+							border: none;
+							color: #333;
+							font-size: 16px;
+							position: absolute;
+							top: -5px;
+							right: -20px;
+							cursor: pointer;
+						}
+					
+						/* Skills Suggestions Dropdown */
+						.suggestions-dropdown {
+							border: 1px solid #ddd;
+							max-height: 200px;
+							overflow-y: auto;
+							position: absolute;
+							background-color: white;
+							width: max-content;
+							z-index: 10;
+							margin-top: 5px;
+							border-radius: 4px;
+						}
+					
+						.suggestion-item {
+							padding: 10px;
+							cursor: pointer;
+						}
+					
+						.suggestion-item:hover {
+							background-color: #f0f0f0;
+						}
+					
+						/* Responsive Styles */
+						@media (max-width: 768px) {
+							form {
+								width: 90%;
+							}
+					
+							h2 {
+								font-size: 28px;
+							}
+					
+							button {
+								width: 100%;
+							}
+						}
+					
+						/* Resume Upload Section */
+						input[type="file"] {
+							padding: 10px;
+						}
+					
+						.btn-danger {
+							background-color: #e74c3c;
+							color: white;
+							border: none;
+							padding: 10px 20px;
+							border-radius: 4px;
+							cursor: pointer;
+						}
+					
+						.btn-danger:hover {
+							background-color: #c0392b;
+						}
+		</style>
+</head>
+<body>
+    <div class="container">
+        <h2>My Profile</h2>
+        <form th:action="@{/update-user-profile}" method="post" enctype="multipart/form-data">
+            <div>
+                <label>Name:</label>
+                <input type="text" th:value="${user.name}" name="name">
+            </div>
+            <div>
+                <label>Email:</label>
+                <input type="email" th:value="${user.email}" name="email">
+            </div>
+            <div>
+                <label>Phone:</label>
+                <input type="text" th:value="${user.phone}" name="phone">
+            </div>
+            <!-- Add other fields as needed -->
+			<div>
+				<label>10th Score:</label>
+				<input type="text" th:value="${user.tenthScore}" name="tenthScore">
+			</div>
+			<div>
+				<label>12th Score:</label>
+				<input type="text" th:value="${user.twelfthScore}" name="twelfthScore">
+
+			</div>
+			<div>
+				<label>Graduation Score:</label>
+				<input type="text" th:value="${user.graduationScore}" name="graduationScore">
+
+			</div>
+			<div>
+				<label>Post Graduation Score:</label>
+				<input type="text" th:value="${user.postgraduationScore}" name="postgraduationScore">
+
+			</div>
+			<div>
+				<label>Location:</label>
+				<input type="text" th:value="${user.location}" name="location">
+
+			</div>
+			<div>
+				<!--<label>Skills:</label>
+				<input type="text" th:value="${user.skills}" name="skills">-->
+				<label for="skillsInput">Skills:</label>
+				    <input type="text" id="skillsInput" name="skills" placeholder="Enter skills" autocomplete="off">
+				    <input type="hidden" name="skills" id="skillsHiddenInput">
+				    <div id="suggestions" class="suggestions-dropdown"></div> <!-- Dropdown for suggestions -->
+				    <div id="skillsTags"></div> <!-- Container for selected skills tags -->
+
+			</div>
+			<h2>Work Experiance:</h2>
+					<label>Company Name: <input type="text" th:value="${user.previousCompany}" name="previousCompany" ></label><br>
+					<label>Years of Experience: 
+					        <input type="number"  th:value="${user.experienceYears}" name="experienceYears" min="0" placeholder="Years"> 
+					        <input type="number" th:value="${user.experienceMonths}" name="experienceMonths" min="0" max="11" placeholder="Months">
+					    </label><br>
+			       <!----<label for="resume">Resume: <input type="file" name="resume" accept=".pdf,.doc,.docx"></label><br>--->
+				   <div>
+				              <!--- <label for="resume">Resume:</label>-->
+				               <!--- If resume exists, show download and delete options -->
+				               <!--<div th:if="${resumeFile != null}">
+				                   <p>Current Resume: <a th:href="@{'/resumes/' + ${resumeFile}}" target="_blank">Download</a></p>
+				                   <form th:action="@{/delete-resume}" method="post">
+				                       <button type="submit" class="btn btn-danger">Delete Resume</button>
+				                   </form>
+				               </div>-->
+
+				               <!-- Upload new resume -->
+				               <!---<input type="file" name="resume" accept=".pdf,.doc,.docx">--->
+							   <label for="resume">Resume:</label>
+							   <!-- If resume exists, show filename and delete options -->
+							   <div th:if="${resumeFile != null}">
+							       <!-- Display the name of the resume file -->
+							       <p>Current Resume: 
+										<!--<span th:text="${resumeFileName}"></span>-->
+										<a th:href="@{'/resumes/' + ${resumeFileName}}" target="_blank" 
+										           th:text="${resumeFileName}">Resume</a>
+								   </p> <!-- Displays the name of the resume file -->
+							       
+							       <!-- Provide a download link with the file name -->
+							       <!--<a th:href="@{'/resumes/' + ${resumeFile}}" target="_blank">Download {{resumeFileName}}</a>--> <!-- Download link with filename -->
+							       
+							       <!-- Form to delete the current resume -->
+							       <form th:action="@{/delete-resume}" method="post">
+							           <button type="submit" class="btn btn-danger">Delete Resume</button>
+							       </form>
+							   </div>
+
+							   <!-- Upload new resume -->
+							   <input type="file" name="resume" accept=".pdf,.doc,.docx">
+
+				     </div>
+			
+            <button type="submit" class="btn btn-primary">Update Profile</button>
+        </form>
+    </div>
+	<script th:inline="javascript">
+	   
+		//const skills = []; // Array to hold selected skills
+		//const existingSkills = "${user.skills}".split(",");
+		//existingSkills.forEach(skill => {
+		 //   $('#skillsTags').append(`<span class="tag">${skill.trim()} <button onclick="removeSkill('${skill.trim()}')">x</button></span>`);
+		  //  skills.push(skill.trim()); // Add to skills array
+		//});
+		
+		//const existingSkills = /*[[${user.skills}]]*/ [];
+		/* Convert Java List to JavaScript Array */
+		  //  const existingSkills = /*[[${user.skills != null ? user.skills : '[]'}]]*/ [];
+		//  const existingSkills = /*[[${skillsJson}]]*/ [];
+//const existingSkills = /*[[${user.skills != null ? user.skills : '[]'}]]*/;
+//const existingSkills = /*[[${user.skills}]]*/ || [];
+//const existingSkills = JSON.parse(/*[[${user.skills != null ? user.skills : '[]'}]]*/ '[]');
+
+const existingSkills = /*[[${user.skills}]]*/ '[]';
+//const existingSkills = new Set(JSON.parse(/*[[${user.skills != null ? user.skills : '[]'}]]*/ '[]'));
+
+		// Defaults to an empty array if user.skills is null
+		const skills = [...existingSkills];
+		existingSkills.forEach(skill => {
+		        $('#skillsTags').append(`<span class="tag">${skill} <button onclick="removeSkill('${skill}')">x</button></span>`);
+		    });
+			
+			
+		
+	    const skillSuggestions = ["Java", "Python", "Spring Boot", "JavaScript", "React", "Node.js", "SQL", "HTML", "CSS", "Angular"]; // Example suggestions
+
+	    // Display suggestions dropdown based on user input
+	    $('#skillsInput').on('input', function() {
+	        const query = $(this).val().toLowerCase();
+	        $('#suggestions').empty();
+
+	        if (query.length >= 2) {
+	            const filteredSuggestions = skillSuggestions.filter(skill => skill.toLowerCase().includes(query) && !skills.includes(skill));
+	            
+	            // Populate dropdown with matching suggestions
+	            filteredSuggestions.forEach(skill => {
+	                $('#suggestions').append(`<div class="suggestion-item" onclick="addSkill('${skill}')">${skill}</div>`);
+	            });
+
+	            // Show the dropdown if there are matching suggestions
+	            $('#suggestions').toggle(filteredSuggestions.length > 0);
+	        } else {
+	            $('#suggestions').hide(); // Hide dropdown if query is too short
+	       }
+	    });
+		
+		$('#skillsInput').on('input', function() {
+		    const query = $(this).val().toLowerCase();
+		    $('#suggestions').empty();
+
+		    if (query.length >= 2) {
+		        const filteredSuggestions = skillSuggestions.filter(skill => skill.toLowerCase().includes(query) && !skills.includes(skill));
+		        
+		        // Populate dropdown with matching suggestions
+		        filteredSuggestions.forEach(skill => {
+		            $('#suggestions').append(`<div class="suggestion-item" onclick="addSkill('${skill}')">${skill}</div>`);
+		        });
+
+		        // Show the dropdown if there are matching suggestions
+		        $('#suggestions').toggle(filteredSuggestions.length > 0);
+		    } 
+			else {
+		        $('#suggestions').hide(); // Hide dropdown if query is too short
+		    }
+		});
+
+	    // Add selected skill as a tag and hide suggestions
+	    /*window.addSkill = function addSkill(skill) {
+	        if (!skills.includes(skill)) {
+	            skills.push(skill);
+	            $('#skillsTags').append(`<span class="tag">${skill} <button onclick="removeSkill('${skill}')">x</button></span>`);
+	            updateHiddenInput();
+	        }
+	        $('#skillsInput').val(''); // Clear input
+	        $('#suggestions').hide(); // Hide suggestions dropdown
+	    }*/
+		const validSkills = ["Java", "Python", "Spring Boot", "JavaScript", "React", "Node.js", "SQL", "HTML", "CSS", "Angular"];
+		window.addSkill = function addSkill(skill) {
+		    // Check if the skill is valid and not already in the list
+		    if (!validSkills.includes(skill)) {
+		        alert("Invalid skill");
+		        return; // Don't add invalid skill
+		    }
+
+		    if (skills.includes(skill)) {
+		        alert("Skill already selected");
+		        return; // Don't add duplicate skill
+		    }
+
+		    // Add the valid, non-duplicate skill to the skills list
+		    skills.push(skill);
+		    
+		    // Append the skill to the tags section
+		    $('#skillsTags').append(`
+		        <span class="tag">
+		            ${skill} 
+		            <button onclick="removeSkill('${skill}')">x</button>
+		        </span>
+		    `);
+		    
+		    // Update hidden input (if needed)
+		    updateHiddenInput();
+
+		    // Clear the input field and hide suggestions dropdown
+		    $('#skillsInput').val('');
+		    $('#suggestions').hide();
+		}
+
+
+	    // Remove skill from tags
+	    window.removeSkill = function removeSkill(skill) {
+	        skills.splice(skills.indexOf(skill), 1);
+	        $(`#skillsTags span:contains(${skill})`).remove();
+	        updateHiddenInput();
+	    }
+		
+		// Update hidden input with comma-separated skills for form submission
+	    function updateHiddenInput() {
+	        $('#skillsHiddenInput').val(skills.join(','));
+	    }
+
+	    // Hide suggestions when clicking outside
+	    $(document).on('click', function(event) {
+	        if (!$(event.target).closest('#skillsInput').length && !$(event.target).closest('#suggestions').length) {
+	            $('#suggestions').hide();
+	        }
+	    });
+
+	    // Initialize skills tags
+	    /*skills.forEach(skill => {
+	        $('#skillsTags').append(`<span class="tag">${skill} <button onclick="removeSkill('${skill}')">x</button></span>`);
+	    });*/
+		
+		
+		
+	</script>
+</body>
+</html>

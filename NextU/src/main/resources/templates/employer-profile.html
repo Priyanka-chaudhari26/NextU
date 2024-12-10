@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employer Profile</title>
+	<style>
+	    body {
+	    font-family: Arial, sans-serif;
+	    margin: 0;
+	    padding: 0;
+	    background-color: #f4f4f9;
+	}
+
+	.content {
+	    display: flex;
+	    flex-direction: column;
+	    justify-content: center;
+	    align-items: center;
+	    padding: 50px 20px;
+	    text-align: center;
+	}
+
+	h2 {
+	    font-size: 2rem;
+	    color: #333;
+	    margin-bottom: 20px;
+	}
+
+	.form-container {
+	    background-color: #fff;
+	    padding: 25px;
+	    border-radius: 10px;
+	    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+	    max-width: 600px;
+	    width: 100%;
+	}
+
+	form {
+	    display: grid;
+	    grid-template-columns: 1fr;
+	    row-gap: 20px;
+	    align-items: center;
+	}
+
+	label {
+	    text-align: left;
+	    color: #333;
+	    font-weight: bold;
+	}
+
+	input[type="text"],
+	input[type="number"],
+	input[type="email"],
+	textarea {
+	    width: 100%;
+	    padding: 10px;
+	    border: 1px solid #ccc;
+	    border-radius: 5px;
+	    font-size: 16px;
+	    box-sizing: border-box;
+	}
+
+	textarea {
+	    resize: none;
+	}
+
+	input:focus, textarea:focus {
+	    border-color: rgb(214, 16, 139);
+	    outline: none;
+	}
+
+	button {
+	    background-color: rgb(153, 50, 204);
+	    color: white;
+	    border: none;
+	    padding: 12px;
+	    border-radius: 5px;
+	    cursor: pointer;
+	    font-size: 16px;
+	    font-weight: bold;
+	    width: 100%;
+	}
+
+	button:hover {
+	    background-color: rgb(199, 95, 243);
+	}
+
+	.back-link {
+	    margin-top: 20px;
+	    text-align: center;
+	}
+
+	.back-link a {
+	    text-decoration: none;
+	    color: rgb(153, 50, 204);
+	    font-size: 1rem;
+	    transition: color 0.3s ease;
+	}
+
+	.back-link a:hover {
+	    color: rgb(199, 95, 243);
+	}
+
+
+	    </style>
+
+</head>
+<body>
+	<div class="content">
+    <h1>Employer Profile</h1>
+	<div class="form-container">
+    <form th:action="@{/update-employer-profile}" th:object="${employer}" method="post">
+        <div>
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" th:field="*{fullName}" required />
+        </div>
+
+		<div>
+		    <label for="mobileNumber">Mobile Number:</label>
+		    <input type="number" id="mobileNumber" th:field="*{mobileNumber}" />
+		</div>
+
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" th:field="*{email}" required />
+        </div>
+
+        <div>
+            <label for="EmployercompanyName">Company Name:</label>
+            <input type="text" id="EmployercompanyName" th:field="*{EmployercompanyName}" />
+        </div>
+
+        
+        <div>
+            <label for="EmployercompanyAddress">Company Address:</label>
+            <textarea id="EmployercompanyAddress" th:field="*{EmployercompanyAddress}" rows="4"></textarea>
+        </div>
+		<div>
+			<label for="EmployercompanyContactNumber">Company Contact Number:</label>
+			<input type="text" id="EmployercompanyContactNumber" th:field="*{EmployercompanyContactNumber}" />
+		</div>
+
+        <button type="submit">Update Profile</button>
+    </form>
+
+	    <div class="back-link">
+	        <a th:href="@{/employer-dashboard}">Back to Dashboard</a>
+	    </div >
+	</div>
+	</div>
+</body>
+</html>

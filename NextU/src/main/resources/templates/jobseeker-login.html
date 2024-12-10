@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Login</title>
+	<style>
+	        /* Overall Body Styles */
+	        body {
+	            font-family: 'Arial', sans-serif;
+	            background-color: #f4f4f9; /* Light background color */
+	            margin: 0;
+	            padding: 0;
+	            color: #333;
+	            display: flex;
+	            justify-content: center;
+	            align-items: center;
+	            height: 100vh; /* Full viewport height */
+	        }
+
+	        /* Container Styles */
+	        .container {
+	            background-color: #ffffff; /* White background for the form */
+	            padding: 20px;
+	            border-radius: 8px; /* Rounded corners */
+	            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+	            width: 300px; /* Fixed width for the form */
+	            text-align: left; /* Left align text within the form */
+	        }
+
+	        /* Heading Styles */
+	        h2 {
+	            color: rgb(153, 50, 204); /* Match with reference */
+	            margin-bottom: 20px; /* Space below the heading */
+	            text-align: center; /* Center the heading */
+	        }
+
+	        /* Form Group Styles */
+	        .form-group {
+	            margin-bottom: 15px; /* Space between form groups */
+	        }
+
+	        /* Label Styles */
+	        label {
+	            display: block; /* Make labels block elements */
+	            margin-bottom: 5px; /* Space below labels */
+	            font-weight: bold; /* Bold text for labels */
+	        }
+
+	        /* Input Styles */
+	        input[type="email"],
+	        input[type="password"] {
+	            width: 100%; /* Full width input fields */
+	            padding: 10px; /* Padding inside input fields */
+	            border: 1px solid #ccc; /* Light border */
+	            border-radius: 4px; /* Rounded corners */
+	            box-sizing: border-box; /* Include padding and border in element's total width */
+	        }
+
+	        /* Button Styles */
+	        button {
+	            background-color: rgb(153, 50, 204); /* Match with reference */
+	            color: white;
+	            padding: 10px 15px;
+	            border: none;
+	            border-radius: 5px;
+	            cursor: pointer;
+	            transition: background-color 0.3s ease;
+	            width: 100%; /* Full width button */
+	        }
+
+	        button:hover {
+	            background-color: rgb(199, 95, 243); /* Match with reference */
+	        }
+
+	        /* Responsive Design */
+	        @media (max-width: 400px) {
+	            .container {
+	                width: 90%; /* Adjust width for smaller screens */
+	            }
+	        }
+	    </style>
+
+</head>
+<body>
+	<div class="container">
+		
+	    <h2>Login</h2>
+		<div th:if="${errorMsg}" style="color: red; text-align: center; margin-bottom: 15px;">
+		        <p th:text="${errorMsg}"></p>
+		    </div>
+	    <form action="/login" method="post">
+			<!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
+			<div class="form-group">
+			     <label for="email">Email:</label>
+			     <input type="email" id="email" name="email" required>
+			 </div>
+			  <div class="form-group">
+			      <label for="password">Password:</label>
+			      <input type="password" id="password" name="password" required>
+			 </div>
+	        <button type="submit">Login</button>
+	    </form>
+	</div>
+</body>
+</html>

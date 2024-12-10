@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Profile</title>
+	<style>
+	        /* Overall Body Styles */
+	        body {
+	            font-family: 'Arial', sans-serif;
+	            background-color: #f4f4f9; /* Match with reference */
+	            margin: 0;
+	            padding: 20px;
+	            color: #333;
+	        }
+
+	        /* Container Styles */
+	        .container {
+	            max-width: 800px; /* Limit width for better readability */
+	            margin: 0 auto; /* Center the container */
+	            padding: 20px;
+	            background-color: #ffffff; /* White background for the content */
+	            border-radius: 8px; /* Rounded corners */
+	            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+	        }
+
+	        /* Heading Styles */
+	        h1 {
+	            text-align: center;
+	            color: rgb(153, 50, 204); /* Match with reference */
+	            margin-top: 20px;
+	            font-size: 32px;
+	            font-weight: bold;
+	        }
+
+	        /* Paragraph Styles */
+	        p {
+	            font-size: 16px;
+	            line-height: 1.6;
+	            margin: 10px 0;
+	        }
+
+	        /* Strong Text Styles */
+	        strong {
+	            color: #34495e; /* Darker color for emphasis */
+	        }
+
+	        /* Button Styles */
+	        button {
+	            background-color: rgb(153, 50, 204); /* Match with reference */
+	            color: white;
+	            padding: 10px 15px;
+	            border: none;
+	            border-radius: 5px;
+	            cursor: pointer;
+	            transition: background-color 0.3s ease;
+	            margin: 10px 0; /* Space between buttons */
+	        }
+
+	        button:hover {
+	            background-color: rgb(199, 95, 243); /* Match with reference */
+	        }
+
+	        /* Disabled Button Styles */
+	        button[disabled] {
+	            background-color: #ccc; /* Grey color for disabled button */
+	            cursor: not-allowed; /* Change cursor to indicate disabled state */
+	        }
+
+	        /* Responsive Design */
+	        @media (max-width: 600px) {
+	            h1 {
+	                font-size: 28px;
+	            }
+
+	            p {
+	                font-size: 14px; /* Adjust paragraph font size for smaller screens */
+	            }
+	        }
+	    </style>
+</head>
+<body>
+	<div class="container">
+    <h1>User Profile</h1>
+    <p><strong>Name:</strong> <span th:text="${user.name}"></span></p>
+    <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+    <p><strong>Phone:</strong> <span th:text="${user.phone}"></span></p>
+    <p><strong>Location:</strong> <span th:text="${user.location}"></span></p>
+    <!--<p><strong>Skills:</strong> <span th:text="${user.skills}"></span></p>-->
+	<p><strong>Skills:</strong> 
+	    <span th:text="${#strings.listJoin(user.skills, ', ')}"></span>
+	</p>
+    <p><strong>Tenth Score:</strong> <span th:text="${user.tenthScore}"></span></p>
+    <p><strong>Twelfth Score:</strong> <span th:text="${user.twelfthScore}"></span></p>
+    <p><strong>Graduation Score:</strong> <span th:text="${user.graduationScore}"></span></p>
+    <p><strong>Previous Company:</strong> <span th:text="${user.previousCompany}"></span></p>
+    <p><strong>Experience:</strong> <span th:text="${user.experienceYears}"></span> Years, 
+       <span th:text="${user.experienceMonths}"></span> Months</p>
+    <p><strong>Resume:</strong> 
+        <a th:href="@{'/download-resume/' + ${user.userId}}" download>Download Resume</a>
+    </p>
+	</div>
+</body>
+</html>

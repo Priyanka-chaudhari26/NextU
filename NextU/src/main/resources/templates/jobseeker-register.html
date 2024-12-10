@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Registration</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://unpkg.com/@yaireo/tagify@latest/dist/tagify.min.js"></script>
+	    <link rel="stylesheet" href="https://unpkg.com/@yaireo/tagify@latest/dist/tagify.css">
+		<style>
+		    /* Style for the suggestions dropdown */
+		    .suggestions-dropdown {
+		        border: 1px solid #ccc;
+		        display:inline-block;
+		        max-height: 100px;
+		        overflow-y: auto;
+		        position: absolute;
+		        background-color: white;
+		        width: 200px;
+		        z-index: 1000;
+		    }
+		    .suggestion-item {
+		        padding: 5px;
+		        cursor: pointer;
+		    }
+		    .suggestion-item:hover {
+		        background-color: #f0f0f0;
+		    }
+		    .tag {
+		        display: inline-block;
+		        background-color: #e0e0e0;
+		        border-radius: 3px;
+		        padding: 5px;
+		        margin: 2px;
+		    }
+			body {
+			            font-family: Arial, sans-serif;
+			            margin: 0;
+			            padding: 0;
+			            background-color: #f9f9f9;
+			        }
+
+			        .container {
+			            max-width: 600px;
+			            margin: 50px auto;
+			            background-color: #ffffff;
+			            padding: 20px;
+			            border-radius: 8px;
+			            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			        }
+
+			        h1 {
+			            text-align: center;
+			            color: #333333;
+			        }
+
+			        .form-group {
+			            margin-bottom: 15px;
+			        }
+
+			        .form-group label {
+			            display: block;
+			            font-weight: bold;
+			            margin-bottom: 5px;
+			            color: #555555;
+			        }
+
+			        .form-group input,
+			        .form-group select,
+			        .form-group button {
+			            width: 100%;
+			            padding: 10px;
+			            border: 1px solid #cccccc;
+			            border-radius: 5px;
+			            box-sizing: border-box;
+			        }
+
+			        .form-group input:focus,
+			        .form-group select:focus {
+			            border-color: #0066cc;
+			            outline: none;
+			            box-shadow: 0 0 5px rgba(0, 102, 204, 0.3);
+			        }
+
+			        button[type="submit"] {
+			            background-color: #0066cc;
+			            color: white;
+			            border: none;
+			            cursor: pointer;
+			            font-size: 16px;
+			            font-weight: bold;
+			        }
+
+			        button[type="submit"]:hover {
+			            background-color: #005bb5;
+			        }
+
+			        .suggestions-dropdown {
+			            border: 1px solid #ccc;
+			            display: inline-block;
+			            max-height: 100px;
+			            overflow-y: auto;
+			            position: absolute;
+			            background-color: white;
+			            width: calc(100% - 22px);
+			            z-index: 1000;
+			        }
+
+			        .suggestion-item {
+			            padding: 10px;
+			            cursor: pointer;
+			            color: #333333;
+			        }
+
+			        .suggestion-item:hover {
+			            background-color: #f0f0f0;
+			        }
+
+			        .tag {
+			            display: inline-block;
+			            background-color: #e0e0e0;
+			            border-radius: 3px;
+			            padding: 5px;
+			            margin: 2px;
+			            font-size: 14px;
+			        }
+
+			        .tag button {
+			            background: none;
+			            border: none;
+			            color: #888888;
+			            font-size: 12px;
+			            margin-left: 5px;
+			            cursor: pointer;
+			        }
+
+			        .tag button:hover {
+			            color: #555555;
+			        }
+
+			        small {
+			            color: #777777;
+			            display: block;
+			            margin-top: 5px;
+			        }
+
+			        .form-group:last-of-type {
+			            margin-bottom: 0;
+			        }
+
+					button[type="submit"] {
+					            width: 100%;
+					            background-color: #4CAF50;
+					            color: white;
+					            padding: 10px;
+					            border: none;
+					            border-radius: 4px;
+					            cursor: pointer;
+					            font-size: 16px;
+					        }
+
+					        button[type="submit"]:hover {
+					            background-color: #45a049;
+					        }
+							.password-criteria {
+							            font-size: 14px;
+							            margin: 0 0 10px 0;
+							        }
+							.valid {
+								 color: green;
+							 }
+
+							.invalid {
+								border-color: red;
+							}
+							.valid-box {
+								border-color: 2px solid green !important;
+							}
+					        input:focus {
+					            border-color: #4CAF50;
+					        }
+
+					        .form-group {
+					            margin-bottom: 15px;
+					        }
+							.hidden {
+							            display: none;
+							 }
+
+			       
+					</style>
+		
+</head>
+<body>
+	<div class="container">
+    <h1>User Registration</h1>
+	<!-- Success Message -->
+	    <div th:if="${successMessage}" style="color: green;">
+	        <i class="fa fa-check-circle"></i> <span th:text="${successMessage}"></span>
+	    </div>
+
+	    <!-- Error Message -->
+	    <div th:if="${errorMessage}" style="color: red;">
+	        <i class="fa fa-exclamation-circle"></i> <span th:text="${errorMessage}"></span>
+	    </div>
+	
+    <form th:object="${user}" action="/jobseeker-register"  modelAttribute="user" method="post" enctype="multipart/form-data">
+		
+		<div class="form-group">
+		                <label>Name:</label>
+		                <input type="text" name="name" th:field="*{name}" required>
+		            </div>
+		            <div class="form-group">
+		                <label>Email:</label>
+		                <input type="email" name="email" th:field="*{email}" required>
+		            </div>
+		            <div class="form-group">
+		                <label>Password:</label>
+		                <input type="password" name="password" th:field="*{password}" oninput="validatePasswordInput()" required>
+		            </div>
+					<div class="password-criteria">
+								            <p id="lengthCriteria" class="invalid">✔ At least 8 characters</p>
+								            <p id="uppercaseCriteria" class="invalid">✔ At least one uppercase letter</p>
+								            <p id="lowercaseCriteria" class="invalid">✔ At least one lowercase letter</p>
+								            <p id="digitCriteria" class="invalid">✔ At least one digit</p>
+								            <p id="specialCharCriteria" class="invalid">✔ At least one special character (!@#$%^&*...)</p>
+								        </div>
+		            <div class="form-group">
+		                <label>Confirm Password:</label>
+		                <input type="password" name="confirmPassword" oninput="validatePassword()" required>
+		            </div>
+		            <div class="form-group">
+		                <label>Mobile Number:</label>
+		                <input type="text" name="phone" th:field="*{phone}" required>
+		            </div>
+		            <div class="form-group">
+		                <label>10th Score:</label>
+		                <input type="number" step="0.01" name="tenthScore" th:field="*{tenthScore}" required>
+		            </div>
+		            <div class="form-group">
+		                <label>12th Score:</label>
+		                <input type="number" step="0.01" name="twelfthScore" th:field="*{twelfthScore}" required>
+		            </div>
+		            <div class="form-group">
+		                <label>Graduation Score:</label>
+		                <input type="number" step="0.01" th:field="*{graduationScore}" name="graduationScore">
+		                <small>Leave Empty if don't have Graduation Score.</small>
+		            </div>
+		            <div class="form-group">
+		                <label>Post Graduation Score:</label>
+		                <input type="number" step="0.01" th:field="*{postgraduationScore}" name="postgraduationScore">
+		                <small>Leave Empty if don't have Post Graduation Score.</small>
+		            </div>
+		            <div class="form-group">
+		                <label>Location:</label>
+		                <input type="text" name="location" th:field="*{location}" required>
+		            </div>
+		            <div class="form-group">
+		                <label for="skillsInput">Skills:</label>
+		                <input type="text" id="skillsInput" name="skills" th:field="*{skills}" placeholder="Enter skills" autocomplete="off">
+		                <input type="hidden" name="skills" id="skillsHiddenInput" th:field="*{skills}">
+		                <div id="suggestions" class="suggestions-dropdown"></div> <!-- Dropdown for suggestions -->
+		                <div id="skillsTags"></div> <!-- Container for selected skills tags -->
+		            </div>
+		            <h2>Work Experience:</h2>
+		            <div class="form-group">
+		                <label>Company Name:</label>
+		                <input type="text" name="previousCompany" th:field="*{previousCompany}">
+		            </div>
+		            <div class="form-group">
+		                <label>Years of Experience:</label>
+		                <input type="number" name="experienceYears" th:field="*{experienceYears}" min="0" placeholder="Years">
+		                <input type="number" name="experienceMonths" th:field="*{experienceMonths}" min="0" max="11" placeholder="Months">
+		            </div>
+		            <div class="form-group">
+		                <label>Resume:</label>
+		                <input type="file" name="resume" th:field="*{resume}" accept=".pdf,.doc,.docx">
+		            </div>
+					<br/>
+        <button type="submit">Register</button>
+    </form>
+	
+	<script>
+			    const skills = []; // Array to hold selected skills
+			    const skillSuggestions = ["Java", "Python", "Spring Boot", "JavaScript", "React", "Node.js", "SQL", "HTML", "CSS", "Angular"]; // Example suggestions
+
+			    // Display suggestions dropdown based on user input
+			    $('#skillsInput').on('input', function() {
+			        const query = $(this).val().toLowerCase();
+			        $('#suggestions').empty();
+
+			        if (query.length >= 2) {
+			            const filteredSuggestions = skillSuggestions.filter(skill => skill.toLowerCase().includes(query));
+			            
+			            // Populate dropdown with matching suggestions
+			            filteredSuggestions.forEach(skill => {
+			                $('#suggestions').append(`<div class="suggestion-item" onclick="addSkill('${skill}')">${skill}</div>`);
+			            });
+
+			            // Show the dropdown if there are matching suggestions
+			            $('#suggestions').toggle(filteredSuggestions.length > 0);
+			        } else {
+			            $('#suggestions').hide(); // Hide dropdown if query is too short
+			        }
+			    });
+
+			    // Add selected skill as a tag and hide suggestions
+			    window.addSkill = function addSkill(skill) {
+					skill = skill.trim();
+			        if (!skills.includes(skill) && skill !== '') {
+			            skills.push(skill);
+			            $('#skillsTags').append(`<span class="tag">${skill} <button onclick="removeSkill('${skill}')">x</button></span>`);
+						 updateHiddenInput();
+			        }
+			        $('#skillsInput').val(''); // Clear input
+			        $('#suggestions').hide(); // Hide suggestions dropdown
+			    }
+
+			    // Remove skill from tags
+			    window.removeSkill = function removeSkill(skill) {
+			        skills.splice(skills.indexOf(skill), 1);
+			        $(`#skillsTags span:contains(${skill})`).remove();
+					updateHiddenInput();
+			    }
+				function updateHiddenInput() {
+						const trimmedSkills = skills.map(skill => skill.trim());
+				        $('#skillsHiddenInput').val(skills.join(','));
+				    }
+			    // Hide suggestions when clicking outside
+			    $(document).on('click', function(event) {
+			        if (!$(event.target).closest('#skillsInput').length && !$(event.target).closest('#suggestions').length) {
+			            $('#suggestions').hide();
+			        }
+			    });
+				function validatePasswordInput() {
+						     const password = document.getElementById("password").value;
+						     const passwordField = document.getElementById("password");
+						     const criteria = {
+						         length: document.getElementById("lengthCriteria"),
+						         uppercase: document.getElementById("uppercaseCriteria"),
+						         lowercase: document.getElementById("lowercaseCriteria"),
+						         digit: document.getElementById("digitCriteria"),
+						         specialChar: document.getElementById("specialCharCriteria"),
+						      };
+							 for (let key in criteria) {
+								criteria[key].classList.remove("valid");
+								criteria[key].classList.add("invalid");
+							 }
+							 const lengthValid = password.length >= 8;
+							 const uppercaseValid = /[A-Z]/.test(password);
+							 const lowercaseValid = /[a-z]/.test(password);
+							 const digitValid = /\d/.test(password);
+							 const specialCharValid = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+							 if (lengthValid) criteria.length.classList.replace("invalid", "valid");
+							 if (uppercaseValid) criteria.uppercase.classList.replace("invalid", "valid");
+							 if (lowercaseValid) criteria.lowercase.classList.replace("invalid", "valid");
+							 if (digitValid) criteria.digit.classList.replace("invalid", "valid");
+							 if (specialCharValid) criteria.specialChar.classList.replace("invalid", "valid");
+							 if (lengthValid && uppercaseValid && lowercaseValid && digitValid && specialCharValid) {
+								passwordField.classList.add("valid-box");
+							 } else {
+								passwordField.classList.remove("valid-box");
+							 }		
+						}		
+
+															
+						function validatePassword() {
+						            const password = document.getElementById("password").value;
+						            const confirmPassword = document.getElementById("confirmPassword").value;
+									const confirmPasswordField = document.getElementById("confirmPassword");
+						            /*if (password != confirmPassword) {
+						                alert("Passwords do not match.");
+						                return false;
+						            }*/
+									if (password === confirmPassword) {
+									            confirmPasswordField.classList.add("valid-box");
+									            confirmPasswordField.setCustomValidity(""); // Reset validity
+									        } else {
+									            confirmPasswordField.classList.remove("valid-box");
+									            confirmPasswordField.setCustomValidity("Passwords do not match"); // Prevent form submission
+									        }
+						            return true;
+						        }
+								
+								document.getElementById("mobileNumber").addEventListener("input", function (event) {
+								        const mobileNumber = event.target.value;
+								        const regex = /^[6-9]\\d{9}$/; // Allow up to 10 digits
+								        if (!regex.test(mobileNumber)) {
+								            event.target.setCustomValidity("Mobile number must contain only digits and be at most 10 digits long.");
+								        } else {
+								            event.target.setCustomValidity(""); // Clear error
+								        }
+								    });
+
+			</script>
+			</div>
+</body>
+</html>

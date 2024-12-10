@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>EmployerLogin</title>
+	<style>
+		body {
+		           font-family: Arial, sans-serif;
+		           background-color: #f0f0f0;
+		           margin: 0;
+		           padding: 0;
+		       }
+
+		       h2 {
+		           text-align: center;
+		           color: #333;
+		           margin-top: 20px;
+		       }
+
+		       form {
+		           width: 400px;
+		           margin: 0 auto;
+		           background-color: #fff;
+		           padding: 20px;
+		           border-radius: 5px;
+		           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		       }
+
+		       label {
+		           display: block;
+		           margin-bottom: 8px;
+		           color: #333;
+		           font-weight: bold;
+		       }
+
+		       input[type="text"],
+		       input[type="email"],
+		       input[type="password"]{
+		           width: 100%;
+		           padding: 10px;
+		           margin-bottom: 20px;
+		           border: 1px solid #ccc;
+		           border-radius: 4px;
+		           box-sizing: border-box;
+		           font-size: 16px;
+		       }
+	       
+		       button[type="submit"] {
+		           width: 100%;
+		           background-color: #4CAF50;
+		           color: white;
+		           padding: 10px;
+		           border: none;
+		           border-radius: 4px;
+		           cursor: pointer;
+		           font-size: 16px;
+		       }
+
+		       button[type="submit"]:hover {
+		           background-color: #45a049;
+		       }
+
+		       input:focus {
+		           border-color: #4CAF50;
+		       }
+			   h3 {
+			   		           text-align: center;
+			   		           color: #333;
+			   		           margin-top: 20px;
+			   }
+
+			
+
+	</style>
+</head>
+<body>
+    <h2>Login</h2>
+	<div th:if="${errorMsg}">
+				<h3 style="color:crimson;" th:text="${errorMsg}"></h3>
+	</div>
+	<h3>New User? <a href="employer-register" style="text-decoration: none;">Register here</a></h3>
+
+    <form th:action="@{/EmployerDashboard}" th:object="${employer}" method="post">
+        <label for="email">Email ID:</label>
+        <input type="text" id="email" th:field="*{email}" name="email" placeholder="Enter your email" required/><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" th:field="*{password}" name="password" placeholder="Enter your password" required/><br>
+
+        <button type="submit">Login</button>
+    </form>
+    
+</body>
+</html>
